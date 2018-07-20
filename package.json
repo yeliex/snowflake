@@ -1,5 +1,5 @@
 {
-  "name": "snowflake-js",
+  "name": "@yeliex/snowflake",
   "version": "0.1.0",
   "description": "a javascript implement of twitter-snowflake uniq-id generation arithmetic",
   "main": "index.js",
@@ -9,6 +9,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yeliex/snowflake.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "keywords": [
     "snowflake",
