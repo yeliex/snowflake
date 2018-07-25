@@ -1,18 +1,16 @@
 {
-  "name": "@yeliex/snowflake",
+  "name": "snowflake",
   "version": "0.1.0",
-  "description": "a javascript implement of twitter-snowflake uniq-id generation arithmetic",
+  "description": "server to generate uniq-id with twitter-snowflake arithmetic",
   "main": "index.js",
+  "private": true,
   "scripts": {
+    "clean": "rm -rf lib/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yeliex/snowflake.git"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
   },
   "keywords": [
     "snowflake",
@@ -27,7 +25,25 @@
   },
   "homepage": "https://github.com/yeliex/snowflake#readme",
   "devDependencies": {
+    "@types/debug": "^0.0.30",
+    "@types/js-yaml": "^3.11.2",
+    "@types/koa": "^2.0.46",
+    "@types/koa-mount": "^3.0.1",
+    "@types/koa-router": "^7.0.30",
+    "@types/lodash": "^4.14.113",
     "@types/node": "^10.5.2",
+    "lerna": "^2.11.0",
     "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "@yeliex/snowflake": "^0.1.0",
+    "debug": "^3.1.0",
+    "js-yaml": "^3.12.0",
+    "koa": "^2.5.2",
+    "koa-convert": "^1.2.0",
+    "koa-mount": "^3.0.0",
+    "koa-response": "^2.1.0",
+    "koa-router": "^7.4.0",
+    "lodash": "^4.17.10"
   }
 }

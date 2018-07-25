@@ -1,0 +1,45 @@
+{
+  "name": "@yeliex/snowflake",
+  "version": "0.1.0",
+  "description": "a javascript implement of twitter-snowflake uniq-id generation arithmetic",
+  "main": "index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf lib/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeliex/snowflake.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "lib",
+    "package.json",
+    "index.js",
+    "yarn.lock",
+    "README.md",
+    "tsconfig.json",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "snowflake",
+    "twitter",
+    "id",
+    "uniq-id"
+  ],
+  "author": "yeliex <yeliex@yeliex.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yeliex/snowflake/issues"
+  },
+  "homepage": "https://github.com/yeliex/snowflake#readme",
+  "devDependencies": {
+    "@types/node": "^10.5.2",
+    "typescript": "^2.9.2"
+  }
+}

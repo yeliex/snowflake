@@ -1,0 +1,12 @@
+# Server base
+server:
+  listenPort: 3000
+
+snowflake:
+  region: 1
+  worker: 1
+  endpoint: 1
+
+security:
+  token:
+    - 2c902731-9641-410f-b306-5c95aa9eb495
