@@ -6,3 +6,5 @@ lib/
 build/
 dist/
 .env.local
+lerna-debug.log
+*.log

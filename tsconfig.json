@@ -19,10 +19,10 @@
       "ES2016",
       "ES2017"
     ],
-    "newLine": "LF", // 防止windows编译出来crlf的换行符
+    "newLine": "LF",
     "pretty": true
   },
   "include": [
-    "./src"
+    "src"
   ]
 }

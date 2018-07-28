@@ -1,6 +1,4 @@
 import * as assert from 'assert';
-import config from '../../../src/libs/Config';
-import * as _ from 'lodash';
 
 export namespace Props {
     export type SnowFlakeMark = 0 | 1;
@@ -44,7 +42,7 @@ export default class SnowFlake {
         assert((options.worker || options.worker === 0) || (options.endpoint || options.worker === 0), 'worker or endpoint must not be null');
 
         if (options.endpoint) {
-            this.worker = Number(_.get(config, 'snowflake.endpoint')).toString(2).padStart(10, '0');
+            this.worker = Number(options.endpoint).toString(2).padStart(10, '0');
         } else {
             this.worker = [options.worker || 0, options.datacenter || 0].map((value) => {
                 return Number(value).toString(2).padStart(5, '0');
