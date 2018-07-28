@@ -11,5 +11,4 @@ export default async (ctx, next) => {
 
     const acceptJson = (ctx.get('accept') === 'application/json') || ctx.query.type === 'json';
 
-
 }
