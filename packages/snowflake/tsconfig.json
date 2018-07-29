@@ -1,28 +1,8 @@
 {
-  "compileOnSave": true,
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "experimentalDecorators": true,
-    "outDir": "lib",
     "rootDir": "src",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "noImplicitAny": false,
-    "sourceMap": true,
-    "strictNullChecks": true,
-    "target": "ES2015",
-    "locale": "zh-CN",
-    "lib": [
-      "ES2015",
-      "ES2016",
-      "ES2017"
-    ],
-    "newLine": "LF",
-    // 防止windows编译出来crlf的换行符
-    "pretty": true
+    "outDir": "lib"
   },
   "include": [
     "src"
