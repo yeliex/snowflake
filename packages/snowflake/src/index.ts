@@ -14,6 +14,8 @@ export namespace Props {
 }
 
 export default class SnowFlake {
+    static default = SnowFlake;
+
     public static endpointId = util.endpointId;
 
     public static MAX_SEQUENCE = 0xFFF;
@@ -55,7 +57,7 @@ export default class SnowFlake {
             this.worker = <any>util.endpointId & SnowFlake.MAX_ENDPOINT;
         }
 
-        this.worker <<= 12;
+        this.worker <<= 11;
 
         if (options.offset) {
             assert(!Number.isNaN(options.offset), `offset must be number of timestamp, but got ${typeof options.offset}`);
@@ -87,7 +89,7 @@ export default class SnowFlake {
     }
 
     private genId(current: number) {
-        const sequence = ++this.sequence;
+        const sequence = this.sequence = this.clear ? 0 : this.sequence + 1;
         const id = Buffer.from(this.clear ? this.genBase(current) : this.base);
         id.writeInt32BE(this.timeCache2 | this.worker | sequence, 4);
         id.writeUInt8(this.timeCache3, 4);

@@ -1,16 +1,16 @@
 import Config from './libs/Config';
 import * as Koa from 'koa';
 import * as KoaRouter from 'koa-router';
-import * as KoaResponse from 'koa-response';
 import * as Debug from 'debug';
 import Controller from './controller';
+import response from './libs/response';
 
 const debug = Debug('snowflake:app');
 const debugRequest = Debug('snowflake:app:request');
 
 const app = new Koa();
 
-app.use(KoaResponse());
+app.use(response);
 
 const errorHandler = (error: any, ctx: Koa.Context) => {
     ctx.throw(error.status || error.id || error.code || 500, error.message || error.error || error);
@@ -34,7 +34,7 @@ app.use(async (ctx, next) => {
 
 const router = new KoaRouter();
 
-router.get('/health', async (ctx) => {
+router.get('/_health', async (ctx) => {
     ctx.throw(200, 'success');
 });
 

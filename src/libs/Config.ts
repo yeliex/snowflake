@@ -138,4 +138,6 @@ class Config {
 
 const config = Config.load();
 
+debug(JSON.stringify(config));
+
 export default config;

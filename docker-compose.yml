@@ -1,0 +1,10 @@
+version: '2.1'
+
+services:
+  snowflake:
+    image: yeliex/snowflake
+    build: ./
+    restart: always
+    healthcheck:
+      test: "curl localhost:3000/_health"
+

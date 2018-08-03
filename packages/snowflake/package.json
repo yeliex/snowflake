@@ -42,5 +42,8 @@
   "devDependencies": {
     "@types/node": "^10.5.2",
     "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "uuid": "^3.3.2"
   }
 }

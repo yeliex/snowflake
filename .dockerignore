@@ -1,0 +1,9 @@
+.idea/
+.git/
+.vscode/
+node_modules
+example
+lib
+packages
+.editorconfig
+lerna.json

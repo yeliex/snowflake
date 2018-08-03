@@ -3,9 +3,9 @@ server:
   listenPort: 3000
 
 snowflake:
-  region: 1
-  worker: 1
-  endpoint: 1
+#  region: 1
+#  worker: 1
+#  endpoint: 1
 
 security:
   token:
