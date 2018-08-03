@@ -16,17 +16,15 @@ export namespace Props {
 export default class SnowFlake {
     public static endpointId = util.endpointId;
 
-    public static MARK_LENGTH = 1;
+    public static MAX_SEQUENCE = 0xFFF;
 
-    public static TIME_LENGTH = 41;
+    public static MAX_ENDPOINT = 0x3FF;
 
-    public static WORKER_LENGTH = 10;
+    public static MAX_WORKER = 0x1F;
 
-    public static SEQUENCE_LENGTH = 12;
+    public static MAX_DATACENTER = 0x1F;
 
-    public static MAX_SEQUENCE = 4095;
-
-    public readonly worker: string;
+    public readonly worker: number;
 
     public readonly mark: Props.SnowFlakeMark;
 
@@ -36,7 +34,12 @@ export default class SnowFlake {
 
     private lastTime = 0;
 
+    private timeCache2 = 0;
+    private timeCache3 = 0;
+
     private sequence = -1;
+
+    private clear = true;
 
     constructor(options: Props.SnowFlake = {}) {
         if (options.mark) {
@@ -45,14 +48,14 @@ export default class SnowFlake {
         this.mark = options.mark || 0;
 
         if (util.exist(options.endpoint)) {
-            this.worker = util.padStart(Number(options.endpoint).toString(2), 10, '0');
+            this.worker = <any>options.endpoint & SnowFlake.MAX_ENDPOINT;
         } else if (util.exist(options.worker)) {
-            this.worker = [options.worker || 0, options.datacenter || 0].map((value) => {
-                return util.padStart(Number(value).toString(2), 5, '0');
-            }).join('');
+            this.worker = (((options.datacenter || 0) & SnowFlake.MAX_DATACENTER) << 5) | ((options.worker || 0) & SnowFlake.MAX_WORKER);
         } else {
-            this.worker = util.padStart(Number(util.endpointId).toString(2), 10, '0');
+            this.worker = <any>util.endpointId & SnowFlake.MAX_ENDPOINT;
         }
+
+        this.worker <<= 12;
 
         if (options.offset) {
             assert(!Number.isNaN(options.offset), `offset must be number of timestamp, but got ${typeof options.offset}`);
@@ -67,57 +70,50 @@ export default class SnowFlake {
         });
     }
 
-    static toChar(number: number, length: number) {
-        return util.padStart(Number(number).toString(2), length, '0');
+    private genBase(current: number) {
+        const id = Buffer.alloc(8, 0);
+        const timeUInt = util.padStart(Number(current - this.offset).toString(2), 41);
+        const time = Number.parseInt(`${this.mark}${timeUInt}`, 2);
+
+        id.writeUInt16BE(Math.floor(time / (1 << 27) & 0xFFFF), 0);
+        id.writeUInt16BE(Math.floor(time / (1 << 11) & 0xFFFF), 2);
+
+        this.timeCache2 = (time & 0x7) << 21;
+        this.timeCache3 = Math.floor(time / (1 << 3) & 0xFF);
+
+        this.base = id;
+        this.clear = false;
+        return id;
     }
 
-    async buildBase(time: number) {
-        time = Date.now();
-        this.lastTime = time;
-        const base = `${this.mark}${SnowFlake.toChar(time, 41)}${this.worker}`;
-        const buf = Buffer.alloc(SnowFlake.MARK_LENGTH + SnowFlake.TIME_LENGTH + SnowFlake.WORKER_LENGTH);
-
-        // buf.writeInt16BE(base, 0, 6);
-
-        return base;
-    }
-
-    async getNext(current: number) {
-        // 处理时间同步后的不一致
-        let base = this.base;
-        if (base) {
-            if (current === this.lastTime) {
-                if (this.sequence >= SnowFlake.MAX_SEQUENCE) {
-                    await SnowFlake.wait(1);
-                    this.sequence = -1;
-                    base = await this.buildBase(Date.now());
-                }
-            }
-            else if (current < this.lastTime) {
-                await SnowFlake.wait(this.lastTime - current + 1);
-                this.sequence = -1;
-                base = await this.buildBase(current);
-            } else if (current > this.lastTime) {
-                this.sequence = -1;
-                base = await this.buildBase(current);
-            }
-        } else {
-            base = await this.buildBase(current);
-        }
-
-        this.sequence = ++this.sequence;
-
-        return this.buildSequence(base, this.sequence);
-    }
-
-    buildSequence(base: string, sequence: number = this.sequence) {
-        const seqStr = util.padStart(Number.parseInt(`${sequence}`, 10).toString(2), SnowFlake.SEQUENCE_LENGTH, '0');
-        const seq = Number.parseInt(`${base}${seqStr}`, 2).toString(16);
-        console.log(base, seqStr, seq);
-        return seq;
+    private genId(current: number) {
+        const sequence = ++this.sequence;
+        const id = Buffer.from(this.clear ? this.genBase(current) : this.base);
+        id.writeInt32BE(this.timeCache2 | this.worker | sequence, 4);
+        id.writeUInt8(this.timeCache3, 4);
+        return id;
     }
 
     async next() {
-        return this.getNext(Date.now());
+        const current = Date.now();
+
+        if (current === this.lastTime && this.sequence < SnowFlake.MAX_SEQUENCE) {
+            return this.genId(current);
+        } else if (current > this.lastTime) {
+            // 更新时间
+            this.lastTime = current;
+            this.clear = true;
+            return this.genId(current);
+        } else if (current < this.lastTime) {
+            // 当前时间小于上次时间, 则等待时间一致
+            await SnowFlake.wait(this.lastTime - current);
+            this.clear = true;
+        } else if (this.sequence >= SnowFlake.MAX_SEQUENCE) {
+            // sequence已经用完了 续一秒
+            await SnowFlake.wait(1);
+            this.clear = true;
+        }
+        const time = this.lastTime = Date.now();
+        return this.genId(time);
     }
 }

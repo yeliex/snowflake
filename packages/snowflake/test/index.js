@@ -2,19 +2,19 @@ const Snowflake = require('../');
 
 const snowflake = new Snowflake();
 
-const obj = {};
+const start = Date.now();
 
 const handler = async (i) => {
-  const id = await snowflake.next();
-  if (obj[id]) {
-    console.log('exist', id);
+  await snowflake.next();
+
+  if (i === 99999) {
+    const dur = Date.now() - start;
+    console.log(dur, 100000 / dur);
   }
-  obj[id] = true;
-  // console.log(i, await snowflake.next(), Date.now());
 };
 
 const main = () => {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 100000; i++) {
     handler(i);
   }
 };
