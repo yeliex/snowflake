@@ -1,6 +1,6 @@
 {
   "name": "@yeliex/snowflake",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "a javascript implement of twitter-snowflake uniq-id generation arithmetic",
   "main": "index.js",
   "types": "lib/index.d.ts",
@@ -44,6 +44,5 @@
   "devDependencies": {
     "@types/node": "^10.5.2",
     "typescript": "^2.9.2"
-  },
-  "dependencies": {}
+  }
 }
