@@ -6,7 +6,12 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf lib/",
+    "prebuild": "npm run clean",
     "build": "tsc",
+    "prebuild:image": "npm run clean",
+    "build:image": "docker build -t yeliex/snowflake:v$npm_package_version -t yeliex/snowflake:latest ./ ",
+    "prepublish:image": "npm run build:image",
+    "publish:image": "docker push yeliex/snowflake",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
