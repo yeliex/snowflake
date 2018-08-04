@@ -16,15 +16,15 @@ export namespace Props {
 export default class SnowFlake {
     static default = SnowFlake;
 
-    public static endpointId = util.endpointId;
+    public static readonly endpointId = util.endpointId;
 
-    public static MAX_SEQUENCE = 0xFFF;
+    public static readonly MAX_SEQUENCE = 0xFFF;
 
-    public static MAX_ENDPOINT = 0x3FF;
+    public static readonly MAX_ENDPOINT = 0x3FF;
 
-    public static MAX_WORKER = 0x1F;
+    public static readonly MAX_WORKER = 0x1F;
 
-    public static MAX_DATACENTER = 0x1F;
+    public static readonly MAX_DATACENTER = 0x1F;
 
     public readonly worker: number;
 
@@ -54,7 +54,7 @@ export default class SnowFlake {
         } else if (util.exist(options.worker)) {
             this.worker = (((options.datacenter || 0) & SnowFlake.MAX_DATACENTER) << 5) | ((options.worker || 0) & SnowFlake.MAX_WORKER);
         } else {
-            this.worker = <any>util.endpointId & SnowFlake.MAX_ENDPOINT;
+            this.worker = <any>SnowFlake.endpointId & SnowFlake.MAX_ENDPOINT;
         }
 
         this.worker <<= 11;

@@ -34,7 +34,7 @@ app.use(async (ctx, next) => {
 
 const router = new KoaRouter();
 
-router.get('/_health', async (ctx) => {
+router.all('/_health', async (ctx) => {
     ctx.throw(200, 'success');
 });
 

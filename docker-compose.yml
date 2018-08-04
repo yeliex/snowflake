@@ -8,3 +8,5 @@ services:
     healthcheck:
       test: "curl localhost:3000/_health"
 
+    ports:
+      - 3000:3000

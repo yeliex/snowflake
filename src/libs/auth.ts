@@ -5,7 +5,7 @@ import Error from './Error';
 
 const debug = Debug('snowflake:request:auth');
 
-const authRequired = config.security.token.length;
+const authRequired = config.security.token && config.security.token.length;
 const tokens = config.security.token;
 
 export default async (ctx: Context) => {

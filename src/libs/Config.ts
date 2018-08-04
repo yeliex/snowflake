@@ -28,8 +28,8 @@ export namespace Props {
     }
 }
 
-const defaultConfig = resolve(__dirname, '../../config/config.default.yml');
-const custromConfig = process.env.NODE_ENV === 'production' ? resolve('/snowflake/config.yml') : resolve(__dirname, '../../config/config.yml');
+const defaultConfig = resolve(__dirname, './config.default.yml');
+const custromConfig = process.env.NODE_ENV === 'production' ? resolve('/snowflake/config/config.yml') : resolve(__dirname, '../../config/config.yml');
 
 class Config {
     static load() {
@@ -107,6 +107,10 @@ class Config {
 
     private getter<T>(obj: T): T {
         const config = {};
+
+        if (typeof obj !== 'object' || obj === null || obj === undefined) {
+            return obj;
+        }
 
         Object.defineProperties(config, Object.keys(obj).reduce((total: any, key) => {
             const value = (<any>obj)[key];
