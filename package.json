@@ -1,6 +1,6 @@
 {
   "name": "snowflake",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "server to generate uniq-id with twitter-snowflake arithmetic",
   "main": "index.js",
   "private": true,
