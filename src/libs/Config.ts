@@ -4,6 +4,7 @@ import * as assert from 'assert';
 import { safeLoad } from 'js-yaml';
 import * as _ from 'lodash';
 import * as Debug from 'debug';
+import DefaultConfig from './DefaultConfig';
 
 const debug = Debug('snowflake:config');
 
@@ -28,14 +29,13 @@ export namespace Props {
     }
 }
 
-const defaultConfig = resolve(__dirname, './config.default.yml');
 const custromConfig = process.env.NODE_ENV === 'production' ? resolve('/snowflake/config/config.yml') : resolve(__dirname, '../../config/config.yml');
 
 class Config {
     static load() {
         debug('start load');
 
-        const config = new Config(_.defaultsDeep(Config.loadFile(custromConfig), Config.loadFile(defaultConfig)));
+        const config = new Config(_.defaultsDeep(Config.loadFile(custromConfig), DefaultConfig));
 
         return config;
     }
@@ -93,8 +93,6 @@ class Config {
                 assert(!Number.isNaN(value), `${key} must be number, but got ${typeof _.get(obj, key)}`);
             }
         });
-
-        assert(_.has(config, 'snowflake.endpoint') || _.has(config, 'snowflake.worker'), 'snowflake.worker or snowflake.endpoint must not be empty');
 
         return config;
     }
