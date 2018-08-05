@@ -11,6 +11,9 @@ export default async (ctx: Context, next) => {
             if (code instanceof Error) {
                 message = code.message;
                 code = (<any>Error).code || 500;
+            } else if(!code){
+                code = 404;
+                message = createError(404).message;
             } else if (isNaN(Number(code))) {
                 message = code;
                 code = 500;
@@ -22,7 +25,7 @@ export default async (ctx: Context, next) => {
             message = message.message || createError(code).message;
         }
 
-        debug(code, message.toString());
+        debug(code, message);
 
         const acceptJson = (ctx.get('accept') === 'application/json') || ctx.query.type === 'json';
 
@@ -45,7 +48,7 @@ export default async (ctx: Context, next) => {
         } else {
             ctx.body = message;
         }
-        ctx.state = code;
+        ctx.status = code;
     };
 
     await next();
