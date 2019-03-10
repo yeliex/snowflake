@@ -96,7 +96,7 @@ export default class SnowFlake {
         return id;
     }
 
-    async next() {
+    async next(encoding?: BufferEncoding) {
         const current = Date.now();
 
         if (current === this.lastTime && this.sequence < SnowFlake.MAX_SEQUENCE) {
@@ -116,6 +116,7 @@ export default class SnowFlake {
             this.clear = true;
         }
         const time = this.lastTime = Date.now();
-        return this.genId(time);
+        const id = this.genId(time);
+        return encoding ? id.toString(encoding) : id;
     }
 }
