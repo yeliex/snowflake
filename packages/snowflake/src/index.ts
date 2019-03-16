@@ -105,7 +105,8 @@ export default class SnowFlake {
             // 更新时间
             this.lastTime = current;
             this.clear = true;
-            return this.genId(current);
+            const id = this.genId(current);
+            return encoding ? id.toString(encoding) : id;
         } else if (current < this.lastTime) {
             // 当前时间小于上次时间, 则等待时间一致
             await SnowFlake.wait(this.lastTime - current);
