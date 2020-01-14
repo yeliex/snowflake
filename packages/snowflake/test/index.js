@@ -4,19 +4,15 @@ const snowflake = new Snowflake();
 
 const start = Date.now();
 
-const handler = async (i) => {
-  await snowflake.next();
+const total = 100000000;
 
-  if (i === 99999) {
-    const dur = Date.now() - start;
-    console.log(dur, 100000 / dur);
+const main = async () => {
+  for (let i = 0; i < total; i++) {
+    await snowflake.next();
   }
-};
 
-const main = () => {
-  for (let i = 0; i < 100000; i++) {
-    handler(i);
-  }
+  const dur = Date.now() - start;
+  console.log(dur, total / dur);
 };
 
 main();
