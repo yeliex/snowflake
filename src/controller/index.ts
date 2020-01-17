@@ -15,7 +15,7 @@ const snowflake = new Snowflake({
 export default async (ctx) => {
     await auth(ctx);
 
-    const id = (await snowflake.next()).toString('hex');
+    const id = (await snowflake.next('hex'));
 
     ctx.throw(200, id);
 

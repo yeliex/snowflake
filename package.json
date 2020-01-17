@@ -4,6 +4,10 @@
   "description": "server to generate uniq-id with twitter-snowflake arithmetic",
   "main": "index.js",
   "private": true,
+  "workspaces": [
+    "./",
+    "packages/*"
+  ],
   "scripts": {
     "clean": "rm -rf lib/",
     "prebuild": "npm run clean",
