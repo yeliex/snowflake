@@ -100,7 +100,8 @@ export default class SnowFlake {
         const current = Date.now();
 
         if (current === this.lastTime && this.sequence < SnowFlake.MAX_SEQUENCE) {
-            return this.genId(current);
+            const id = this.genId(current);
+            return encoding ? id.toString(encoding) : id;
         } else if (current > this.lastTime) {
             // 更新时间
             this.lastTime = current;
