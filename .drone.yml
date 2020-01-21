@@ -1,0 +1,12 @@
+kind: pipeline
+type: docker
+name: test
+
+steps:
+  - name: test
+    image: node:alpine
+    commands:
+      - yarn
+      - npx lerna exec npm run build --stream
+      - node packages/snowflake/test/index.js
+      - node packages/snowflake/test/uuid.js
