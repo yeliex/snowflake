@@ -96,7 +96,9 @@ export default class SnowFlake {
         return id;
     }
 
-    async next(encoding?: BufferEncoding) {
+    async next(): Promise<Buffer>
+    async next(encoding: BufferEncoding): Promise<string>
+    async next(encoding?: BufferEncoding): Promise<string | Buffer> {
         const current = Date.now();
 
         if (current === this.lastTime && this.sequence < SnowFlake.MAX_SEQUENCE) {
