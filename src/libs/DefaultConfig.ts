@@ -1,4 +1,4 @@
-import { Props } from './Config';
+import { type Props } from './Config.js';
 
 export default <Props.InputConfig>{
     server: {

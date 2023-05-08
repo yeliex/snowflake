@@ -1,21 +1,19 @@
-import * as assert from 'assert';
-import * as util from './libs/util';
+import { strict as assert } from 'assert';
+import * as util from './libs/util.js';
 
 export namespace Props {
     export type SnowFlakeMark = 0 | 1;
 
     export interface SnowFlake {
-        mark?: SnowFlakeMark
-        datacenter?: number
-        worker?: number
-        endpoint?: number
-        offset?: number
+        mark?: SnowFlakeMark;
+        datacenter?: number;
+        worker?: number;
+        endpoint?: number;
+        offset?: number;
     }
 }
 
 export default class SnowFlake {
-    static default = SnowFlake;
-
     public static readonly endpointId = util.endpointId;
 
     public static readonly MAX_SEQUENCE = 0xFFF;
@@ -50,17 +48,22 @@ export default class SnowFlake {
         this.mark = options.mark || 0;
 
         if (util.exist(options.endpoint)) {
-            this.worker = <any>options.endpoint & SnowFlake.MAX_ENDPOINT;
+            this.worker = <any> options.endpoint & SnowFlake.MAX_ENDPOINT;
         } else if (util.exist(options.worker)) {
-            this.worker = (((options.datacenter || 0) & SnowFlake.MAX_DATACENTER) << 5) | ((options.worker || 0) & SnowFlake.MAX_WORKER);
+            this.worker =
+                (((options.datacenter || 0) & SnowFlake.MAX_DATACENTER) << 5) | ((options.worker || 0)
+                    & SnowFlake.MAX_WORKER);
         } else {
-            this.worker = <any>SnowFlake.endpointId & SnowFlake.MAX_ENDPOINT;
+            this.worker = <any> SnowFlake.endpointId & SnowFlake.MAX_ENDPOINT;
         }
 
         this.worker <<= 11;
 
         if (options.offset) {
-            assert(!Number.isNaN(options.offset), `offset must be number of timestamp, but got ${typeof options.offset}`);
+            assert(
+                !Number.isNaN(options.offset),
+                `offset must be number of timestamp, but got ${typeof options.offset}`,
+            );
         }
 
         this.offset = options.offset || 0;

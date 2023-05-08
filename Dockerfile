@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:18-alpine
 
 RUN apk add curl openssl --no-cache && \
     mkdir -p /snowflake && \

@@ -1,28 +1,31 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "declaration": true,
     "experimentalDecorators": true,
-    "outDir": "lib",
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
     "rootDir": "src",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "ESNEXT",
+    "target": "ES2021",
     "locale": "zh-CN",
     "lib": [
-      "ES2015",
-      "ES2016",
-      "ES2017"
+      "ESNext"
     ],
     "newLine": "LF",
-    "pretty": true
+    "pretty": true,
+    "useDefineForClassFields": true
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

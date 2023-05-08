@@ -1,10 +1,11 @@
 import { resolve } from 'path';
 import * as fs from 'fs';
-import * as assert from 'assert';
-import { safeLoad } from 'js-yaml';
-import * as _ from 'lodash';
-import * as Debug from 'debug';
-import DefaultConfig from './DefaultConfig';
+import { strict as assert } from 'assert';
+import { load } from 'js-yaml';
+import { cloneDeep, defaultsDeep, get, set } from 'lodash-es';
+import Debug from 'debug';
+import { fileURLToPath } from 'url';
+import DefaultConfig from './DefaultConfig.js';
 
 const debug = Debug('snowflake:config');
 
@@ -25,17 +26,20 @@ export namespace Props {
     }
 
     export interface InputConfig {
-        [key: string]: any
+        [key: string]: any;
     }
 }
 
-const custromConfig = process.env.NODE_ENV === 'production' ? resolve('/snowflake/config/config.yml') : resolve(__dirname, '../../config/config.yml');
+const custromConfig = process.env.NODE_ENV === 'production' ? resolve('/snowflake/config/config.yml') : resolve(
+    fileURLToPath(import.meta.url),
+    '../../../config/config.yml',
+);
 
 class Config {
     static load() {
         debug('start load');
 
-        const config = new Config(_.defaultsDeep(Config.loadFile(custromConfig), DefaultConfig));
+        const config = new Config(defaultsDeep(Config.loadFile(custromConfig), DefaultConfig));
 
         return config;
     }
@@ -49,7 +53,7 @@ class Config {
 
         const str = fs.readFileSync(path, 'utf8');
 
-        const config = safeLoad(str);
+        const config = load(str);
 
         if (!config) {
             return {};
@@ -61,18 +65,18 @@ class Config {
     }
 
     static check(obj: Props.InputConfig): Props.Configs {
-        const config = <Props.Configs>_.cloneDeep(obj);
+        const config = <Props.Configs> cloneDeep(obj);
 
         ['server.listenPort'].forEach((key) => {
-            const value = Number(_.get(config, key));
+            const value = Number(get(config, key));
 
-            assert(value && !Number.isNaN(value), `${key} must be number, but got ${typeof _.get(obj, key)}`);
-            _.set(config, key, value);
+            assert(value && !Number.isNaN(value), `${key} must be number, but got ${typeof get(obj, key)}`);
+            set(config, key, value);
         });
 
         (() => {
             const key = 'security.token';
-            const value = _.get(config, key);
+            const value = get(config, key);
             if (value) {
                 assert(Array.isArray(value), `${key} must be string[], but got ${typeof value}`);
             }
@@ -80,17 +84,17 @@ class Config {
 
         (() => {
             const key = 'snowflake.offset';
-            const value = Number(_.get(config, key));
+            const value = Number(get(config, key));
             if (value) {
-                assert(!Number.isNaN(value), `${key} must be number of timestamp, but got ${typeof _.get(obj, key)}`);
+                assert(!Number.isNaN(value), `${key} must be number of timestamp, but got ${typeof get(obj, key)}`);
             }
-            _.set(config, key, value);
+            set(config, key, value);
         })();
 
         ['snowflake.worker', 'snowflake.datacenter', 'snowflake.endpoint'].forEach((key) => {
-            const value = Number(_.get(config, key));
+            const value = Number(get(config, key));
             if (value) {
-                assert(!Number.isNaN(value), `${key} must be number, but got ${typeof _.get(obj, key)}`);
+                assert(!Number.isNaN(value), `${key} must be number, but got ${typeof get(obj, key)}`);
             }
         });
 
@@ -111,18 +115,18 @@ class Config {
         }
 
         Object.defineProperties(config, Object.keys(obj).reduce((total: any, key) => {
-            const value = (<any>obj)[key];
+            const value = (<any> obj)[key];
 
-            total[key] = <PropertyDescriptor>{
+            total[key] = <PropertyDescriptor> {
                 enumerable: true,
                 get: () => {
                     return (typeof value === 'object' && !Array.isArray(value)) ? this.getter(value) : value;
-                }
+                },
             };
             return total;
         }, {}));
 
-        return <T>config;
+        return <T> config;
     }
 
     get server() {

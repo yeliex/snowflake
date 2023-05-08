@@ -2,14 +2,14 @@
   "name": "snowflake",
   "version": "1.0.3",
   "description": "server to generate uniq-id with twitter-snowflake arithmetic",
-  "main": "index.js",
   "private": true,
+  "type": "module",
   "workspaces": [
     "./",
     "packages/*"
   ],
   "scripts": {
-    "clean": "rm -rf lib/",
+    "clean": "rm -rf dist/",
     "prebuild": "npm run clean",
     "build": "tsc",
     "prebuild:image": "npm run clean",
@@ -35,27 +35,27 @@
   },
   "homepage": "https://github.com/yeliex/snowflake#readme",
   "devDependencies": {
-    "@types/debug": "^0.0.30",
-    "@types/http-errors": "^1.6.1",
-    "@types/js-yaml": "^3.11.2",
-    "@types/koa": "^2.0.46",
-    "@types/koa-mount": "^3.0.1",
-    "@types/koa-router": "^7.0.30",
-    "@types/lodash": "^4.14.113",
-    "@types/node": "^10.5.2",
-    "lerna": "^3.22.1",
-    "typescript": "^2.9.2"
+    "@types/debug": "^4.1.7",
+    "@types/http-errors": "^1.6.3",
+    "@types/js-yaml": "^4.0.5",
+    "@types/koa": "^2.13.6",
+    "@types/koa-mount": "^4.0.2",
+    "@types/koa-router": "^7.4.4",
+    "@types/lodash-es": "^4.14.194",
+    "@types/node": "^20.1.0",
+    "lerna": "^6.6.2",
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "@yeliex/snowflake": "^1.0.3",
-    "debug": "^3.1.0",
-    "http-errors": "^1.7.0",
-    "js-yaml": "^3.12.0",
-    "koa": "^2.5.2",
-    "koa-convert": "^1.2.0",
-    "koa-mount": "^3.0.0",
+    "debug": "^4.3.4",
+    "http-errors": "^1.6.3",
+    "js-yaml": "^4.1.0",
+    "koa": "^2.14.2",
+    "koa-convert": "^2.0.0",
+    "koa-mount": "^4.0.0",
     "koa-response": "^2.1.0",
-    "koa-router": "^7.4.0",
-    "lodash": "^4.17.10"
+    "koa-router": "^12.0.0",
+    "lodash-es": "^4.17.21"
   }
 }

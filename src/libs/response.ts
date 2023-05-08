@@ -1,28 +1,27 @@
-import { Context } from 'koa';
-import * as Debug from 'debug';
-import * as createError from 'http-errors';
+import { Middleware } from 'koa';
+import Debug from 'debug';
+import createError from 'http-errors';
 
 const debug = Debug('snowflake:response');
 
-export default async (ctx: Context, next) => {
-    // @ts-ignore
-    ctx.throw = (code, message?) => {
+const ResponseMiddleware: Middleware = async (ctx, next) => {
+    ctx.throw = ((code: number, message?: string) => {
         if (!message) {
-            if (code instanceof Error) {
-                message = code.message;
-                code = (<any>Error).code || 500;
-            } else if(!code){
+            if ((code as any as Error) instanceof Error) {
+                message = (code as any as Error).message;
+                code = (<any> Error).code || 500;
+            } else if (!code) {
                 code = 404;
                 message = createError(404).message;
             } else if (isNaN(Number(code))) {
-                message = code;
+                message = code as any;
                 code = 500;
             } else {
-                message = createError(code, message).message;
+                message = createError(code, message as any).message;
             }
         }
-        if (message instanceof Error) {
-            message = message.message || createError(code).message;
+        if ((message as any) instanceof Error) {
+            message = (message as any as Error).message || createError(code).message;
         }
 
         debug(code, message);
@@ -36,8 +35,8 @@ export default async (ctx: Context, next) => {
         }
 
         if (acceptJson) {
-            const data = <any>{
-                code
+            const data = <any> {
+                code,
             };
             if (code < 400) {
                 data.data = message;
@@ -49,7 +48,9 @@ export default async (ctx: Context, next) => {
             ctx.body = message;
         }
         ctx.status = code;
-    };
+    }) as any;
 
     await next();
-}
+};
+
+export default ResponseMiddleware;

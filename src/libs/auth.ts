@@ -1,7 +1,7 @@
 import { Context } from 'koa';
-import * as Debug from 'debug';
-import config from './Config';
-import Error from './Error';
+import Debug from 'debug';
+import config from './Config.js';
+import Error from './Error.js';
 
 const debug = Debug('snowflake:request:auth');
 
@@ -12,7 +12,7 @@ export default async (ctx: Context) => {
     if (!authRequired) {
         return;
     }
-    const token = ctx.get('X-TOKEN') || ctx.query.token;
+    const token = ctx.get('X-TOKEN') || ctx.query.token as string;
 
     if (!token) {
         debug(token, 'unauthed');

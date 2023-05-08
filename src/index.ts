@@ -1,9 +1,9 @@
-import Config from './libs/Config';
-import * as Koa from 'koa';
-import * as KoaRouter from 'koa-router';
-import * as Debug from 'debug';
-import Controller from './controller';
-import response from './libs/response';
+import Config from './libs/Config.js';
+import Koa from 'koa';
+import KoaRouter from 'koa-router';
+import Debug from 'debug';
+import Controller from './controller/index.js';
+import response from './libs/response.js';
 
 const debug = Debug('snowflake:app');
 const debugRequest = Debug('snowflake:app:request');
@@ -40,11 +40,11 @@ router.all('/_health', async (ctx) => {
 
 router.get('/', Controller);
 
-router.all('*', async (ctx) => {
+router.all('(.*)', async (ctx) => {
     ctx.throw();
 });
 
-app.use(router.routes()).use(router.allowedMethods({throw: true}));
+app.use(router.routes()).use(router.allowedMethods({ throw: true }));
 
 app.listen(Config.server.listenPort, () => {
     debug('start listen at', Config.server.listenPort);
