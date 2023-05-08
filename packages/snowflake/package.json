@@ -22,13 +22,9 @@
   },
   "files": [
     "src",
-    "lib",
+    "dist",
     "package.json",
-    "index.js",
-    "yarn.lock",
-    "README.md",
-    "tsconfig.json",
-    "index.d.ts"
+    "README.md"
   ],
   "keywords": [
     "snowflake",
