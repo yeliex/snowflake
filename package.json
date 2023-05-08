@@ -1,6 +1,6 @@
 {
   "name": "snowflake",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "server to generate uniq-id with twitter-snowflake arithmetic",
   "private": true,
   "type": "module",
@@ -47,7 +47,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@yeliex/snowflake": "^1.0.3",
+    "@yeliex/snowflake": "^2.0.0",
     "debug": "^4.3.4",
     "http-errors": "^1.6.3",
     "js-yaml": "^4.1.0",
