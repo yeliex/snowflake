@@ -30,7 +30,7 @@ export default class SnowFlake {
 
     public readonly offset: number;
 
-    private base: Buffer;
+    private base?: Buffer;
 
     private lastTime = 0;
 
@@ -93,7 +93,7 @@ export default class SnowFlake {
 
     private genId(current: number) {
         const sequence = this.sequence = this.clear ? 0 : this.sequence + 1;
-        const id = Buffer.from(this.clear ? this.genBase(current) : this.base);
+        const id = Buffer.from((this.clear || !this.base) ? this.genBase(current) : this.base);
         id.writeInt32BE(this.timeCache2 | this.worker | sequence, 4);
         id.writeUInt8(this.timeCache3, 4);
         return id;
