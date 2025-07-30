@@ -3,12 +3,10 @@
   "version": "2.0.2",
   "description": "a javascript implement of twitter-snowflake uniq-id generation arithmetic",
   "main": "dist/index.js",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "clean": "rm -rf dist/",
-    "prebuild": "npm run clean",
-    "build": "tsc",
+    "build": "pkgroll --clean-dist --source-map",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -40,6 +38,7 @@
   "homepage": "https://github.com/yeliex/snowflake#readme",
   "devDependencies": {
     "@types/node": "^20.1.0",
+    "pkgroll": "^2.14.5",
     "typescript": "^4.9.5"
   }
 }
